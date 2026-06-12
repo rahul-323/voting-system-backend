@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 import java.util.function.Function;
 
 @Component
@@ -52,7 +51,7 @@ public class JwtUtils {
     private String createToken(String username, Object authorities) {
         return Jwts.builder()
                 .setSubject(username)
-                .claim("roles", authorities)  // Add roles or other custom claims here
+                .claim("roles", authorities) // Add roles or other custom claims here
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour expiration
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)

@@ -49,10 +49,6 @@ public class AuthController {
             // Generate token
             String token = jwtUtils.generateToken(userDetails);
 
-            // Fetch user to get userType
-            User user = userRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-
             // Return token and userType in response
             return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
         } catch (BadCredentialsException e) {
