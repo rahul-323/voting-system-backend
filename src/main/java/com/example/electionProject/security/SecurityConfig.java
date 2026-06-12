@@ -1,6 +1,5 @@
 package com.example.electionProject.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,26 +54,20 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	    return http.csrf(AbstractHttpConfigurer::disable)
-	            .cors(Customizer.withDefaults())
-	            .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
-	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	            .authorizeHttpRequests(auth -> auth
-	                .anyRequest().permitAll() // <-- Allow all endpoints
-	                /*
-	                .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-	                .requestMatchers("/api/elections").permitAll() 
-	                .requestMatchers("/api/elections/{id}").permitAll()
-	                .requestMatchers("api/users","api/users/**").hasAnyRole("ADMIN")
-	                .requestMatchers("/api/**").hasAnyRole("User", "Admin")
-	                .anyRequest().authenticated()
-	                */
-	            )
-	            // .authenticationProvider(authenticationProvider()) // <-- Optional to comment
-	            // .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // <-- Optional to comment
-	            .build();
+		return http.csrf(AbstractHttpConfigurer::disable)
+				.cors(Customizer.withDefaults())
+				.exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+						.requestMatchers("/api/elections", "/api/elections/**").permitAll()
+						.requestMatchers("/api/candidates", "/api/candidates/**").permitAll()
+						.requestMatchers("/api/users/**").authenticated()
+						.requestMatchers("/api/votes/**").authenticated()
+						.anyRequest().permitAll())
+				.authenticationProvider(authenticationProvider())
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+				.build();
 	}
-	
-
 
 }

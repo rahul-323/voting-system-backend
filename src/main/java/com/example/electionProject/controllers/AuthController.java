@@ -35,6 +35,7 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         try {
@@ -60,11 +61,11 @@ public class AuthController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR); // Server error
         }
     }
+
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
-
 }

@@ -1,0 +1,800 @@
+{
+    "info": {
+        "name": "Voting System API",
+        "description": "Complete API collection for voting system - from registration to voting",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securePass123\",\n  \"phone\": \"9876543210\",\n  \"voterID\": \"ABC12345\",\n  \"userType\": \"Voter\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/auth/register",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        },
+                        "description": "Register a new user (Admin or Voter)\n\nValidation Rules:\n- Name: 2-50 characters\n- Email: Valid email format\n- Password: Min 8 characters\n- Phone: Exactly 10 digits\n- Voter ID: 6-12 alphanumeric characters\n- User Type: 'Admin' or 'Voter'"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securePass123\",\n  \"userType\": \"Voter\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/auth/login",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Login with email and password. Returns JWT token.\n\nSave the token and use it in Authorization header for other requests:\nHeader: Authorization: Bearer {token}"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Users",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8080/api/users",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "users"
+                            ]
+                        },
+                        "description": "Get list of all users. Requires JWT token in Authorization header."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8080/api/users/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "users",
+                                "1"
+                            ]
+                        },
+                        "description": "Get specific user by ID. Replace 1 with actual user ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"newPassword123\",\n  \"phone\": \"9876543211\",\n  \"voterID\": \"XYZ67890\",\n  \"userType\": \"Voter\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/users/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "users",
+                                "1"
+                            ]
+                        },
+                        "description": "Update user details. Replace 1 with actual user ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8080/api/users/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "users",
+                                "1"
+                            ]
+                        },
+                        "description": "Delete a user. Replace 1 with actual user ID."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Elections",
+            "item": [
+                {
+                    "name": "Create Election",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Presidential Election 2024\",\n  \"startDate\": \"2024-06-15\",\n  \"endDate\": \"2024-06-25\",\n  \"status\": \"Active\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections"
+                            ]
+                        },
+                        "description": "Create a new election. Status is auto-determined based on dates:\n- Before startDate: 'Upcoming'\n- Between dates: 'Active'\n- After endDate: 'Completed'\n\nDate format: YYYY-MM-DD"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Elections",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections"
+                            ]
+                        },
+                        "description": "Get list of all elections."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Election by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections",
+                                "1"
+                            ]
+                        },
+                        "description": "Get specific election by ID. Replace 1 with actual election ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Elections by Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections/status/Active",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections",
+                                "status",
+                                "Active"
+                            ]
+                        },
+                        "description": "Filter elections by status. Replace 'Active' with:\n- 'Upcoming': Elections not yet started\n- 'Active': Elections currently running\n- 'Completed': Elections that have ended"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Election Stats",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections/stats",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections",
+                                "stats"
+                            ]
+                        },
+                        "description": "Get statistics about all elections (total, active, completed)."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Election",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Updated Election Title\",\n  \"startDate\": \"2024-07-01\",\n  \"endDate\": \"2024-07-10\",\n  \"status\": \"Active\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections",
+                                "1"
+                            ]
+                        },
+                        "description": "Update election details. Replace 1 with actual election ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Election",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections",
+                                "1"
+                            ]
+                        },
+                        "description": "Delete an election. Replace 1 with actual election ID."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Candidates",
+            "item": [
+                {
+                    "name": "Create Candidate",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Alice Smith\",\n  \"electionID\": 1,\n  \"party\": \"Democratic Party\",\n  \"symbol\": \"Lion\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/candidates",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "candidates"
+                            ]
+                        },
+                        "description": "Create a new candidate for an election. Requires existing electionID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Candidates",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/candidates",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "candidates"
+                            ]
+                        },
+                        "description": "Get list of all candidates across all elections."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Candidate by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/candidates/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "candidates",
+                                "1"
+                            ]
+                        },
+                        "description": "Get specific candidate by ID. Replace 1 with actual candidate ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Candidate",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Alice Johnson\",\n  \"electionID\": 1,\n  \"party\": \"Democratic Party\",\n  \"symbol\": \"Elephant\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/candidates/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "candidates",
+                                "1"
+                            ]
+                        },
+                        "description": "Update candidate details. Replace 1 with actual candidate ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Candidate",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/candidates/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "candidates",
+                                "1"
+                            ]
+                        },
+                        "description": "Delete a candidate. Replace 1 with actual candidate ID."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Votes",
+            "item": [
+                {
+                    "name": "Cast Vote",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userID\": 1,\n  \"candidateID\": 1,\n  \"electionID\": 1,\n  \"voteDate\": \"2024-06-20\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/votes",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "votes"
+                            ]
+                        },
+                        "description": "Cast a vote for a candidate in an election.\nRequired:\n- userID: ID of the voter (must exist)\n- candidateID: ID of the candidate (must exist)\n- electionID: ID of the election (must exist and be Active)\n- voteDate: Date of voting (format: YYYY-MM-DD)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Votes",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/votes",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "votes"
+                            ]
+                        },
+                        "description": "Get list of all votes cast in the system."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Vote by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/votes/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "votes",
+                                "1"
+                            ]
+                        },
+                        "description": "Get specific vote by ID. Replace 1 with actual vote ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Vote",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/votes/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "votes",
+                                "1"
+                            ]
+                        },
+                        "description": "Delete a vote. Replace 1 with actual vote ID."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Complete Workflow Example",
+            "item": [
+                {
+                    "name": "Step 1 - Register Voter",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Sam Wilson\",\n  \"email\": \"sam.wilson@example.com\",\n  \"password\": \"VoterPass123\",\n  \"phone\": \"9123456789\",\n  \"voterID\": \"VOTER001\",\n  \"userType\": \"Voter\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/auth/register",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        },
+                        "description": "Step 1: Register a new voter. Save the userID from response."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 2 - Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"sam.wilson@example.com\",\n  \"password\": \"VoterPass123\",\n  \"userType\": \"Voter\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/auth/login",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Step 2: Login to get JWT token. Save this token and use it in Authorization header for protected endpoints. Use variable {{jwt_token}} in other requests."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 3 - View Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8080/api/users/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "users",
+                                "1"
+                            ]
+                        },
+                        "description": "Step 3: View your voter profile."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 4 - View Active Elections",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/elections/status/Active",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "elections",
+                                "status",
+                                "Active"
+                            ]
+                        },
+                        "description": "Step 4: View all active elections that you can vote in."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 5 - View Candidates",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/candidates",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "candidates"
+                            ]
+                        },
+                        "description": "Step 5: View all candidates in active elections."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 6 - Cast Your Vote",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userID\": 1,\n  \"candidateID\": 1,\n  \"electionID\": 1,\n  \"voteDate\": \"2024-06-20\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/votes",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "votes"
+                            ]
+                        },
+                        "description": "Step 6: Cast your vote for a candidate."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 7 - Verify Vote",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/votes/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "votes",
+                                "1"
+                            ]
+                        },
+                        "description": "Step 7: Verify your vote was recorded."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "jwt_token",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}
